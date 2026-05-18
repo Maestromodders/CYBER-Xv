@@ -1,8 +1,8 @@
 /*
 ┏━━━━━━━━━━━━━━━┓
-┃     𝐉𝐀𝐌𝐄𝐒𝐓𝐄𝐂𝐇
+┃     CYBER QUEST
 ┣━━━━━━━━━━━━━━━┛
-┃whatsapp : +254785016388
+┃whatsapp : +254788409105
 ┃owner : james
 ┃base : vimpire killer 
 ┃best friend : ibrahim / trashcore dev
