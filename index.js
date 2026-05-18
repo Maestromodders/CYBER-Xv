@@ -1,6 +1,6 @@
 /*
 ╔════════════════════════════════╗
-║        รקєςtгє II              ║
+║                  ║
 ╠════════════════════════════════╣
 ║ bot      : SPECTRE II
 ║ dev      : sudo
@@ -30,10 +30,10 @@ const store = createToxxicStore('./store', {
 const token = process.env.TELEGRAM_BOT_TOKEN;
 let OWNER_ID = process.env.OWNER_ID;
 
-const REQUIRED_CHANNEL = process.env.REQUIRED_CHANNEL || '@andromedaxs';
-const REQUIRED_GROUP = process.env.REQUIRED_GROUP || '@andromedaxsg';
+const REQUIRED_CHANNEL = process.env.REQUIRED_CHANNEL || '@cyberpunkbully';
+const REQUIRED_GROUP = process.env.REQUIRED_GROUP || '@+-4jmRbsQY6JmZGJk';
 
-const SPECTRE_THUMB = 'https://ik.imagekit.io/apexcloud/IMG_20260322_001154.jpg';
+const SPECTRE_THUMB = 'https://files.catbox.moe/tk1xpz.jpeg';
 
 if (!token) {
   console.error('Telegram bot token is not set. Please set the TELEGRAM_BOT_TOKEN environment variable.');
@@ -197,7 +197,7 @@ async function startWhatsAppBot(phoneNumber, telegramChatId = null, retryCount =
 📅 *Date:* ${moment().format('DD/MM/YYYY')}
 
 ━━━━━━━━━━━━━━━━━━━━━
-🎯 *รקєςtгє II is now live!*
+🎯 *CYBERPUNK-BULLY is now live!*
 ━━━━━━━━━━━━━━━━━━━━━
 
 💡 *Support:* @redshiftsupportbot
@@ -359,10 +359,10 @@ bot.on('callback_query', async (query) => {
   if (data === 'main_menu') {
     const menuText = `
 ◆━━━━━━━━━━━━━━━━━━━━◆
-      รקєςtгє II — MENU
+      CYBERPUNK-BULLY— MENU
 ◆━━━━━━━━━━━━━━━━━━━━◆
 
-*🕵️ SPECTRE II Pairing Bot*
+*🕵️ CYBERPUNK-BULLY Pairing Bot*
 ━━━━━━━━━━━━━━━━━━━━━
 
 ▸ Connect your WhatsApp
@@ -397,7 +397,7 @@ _Select an option below:_
 *Step-by-step:*
 
 1️⃣ Command: \`/pair <number>\`
-2️⃣ Example: \`/pair 234xxx\`
+2️⃣ Example: \`/pair 254xxx\`
 3️⃣ Get your pairing code
 4️⃣ Enter code in WhatsApp
 
@@ -451,7 +451,7 @@ _Select an option below:_
     const minutes = Math.floor((uptime % (60 * 60)) / 60);
     const infoText = `
 ◆━━━━━━━━━━━━━━━━━━━━◆
-      ℹ️  SPECTRE II INFO
+      ℹ️  CYBERPUNK-BULLY INFO
 ◆━━━━━━━━━━━━━━━━━━━━◆
 
 ⏱ *Uptime:* ${days}d ${hours}h ${minutes}m
@@ -460,9 +460,9 @@ _Select an option below:_
 📡 *Status:* Online ✅
 
 ━━━━━━━━━━━━━━━━━━━━━
-🛠 *Developer:* @@sudoxarc
-📦 *Version:* 2.0.0
-🤖 *Bot:* รקєςtгє II
+🛠 *Developer:* @@cyberpunkbully
+📦 *Version:* 1.0.0
+🤖 *Bot:* CYBERPUNK-BULLY
 ━━━━━━━━━━━━━━━━━━━━━
 `;
     bot.editMessageCaption(infoText, {
@@ -509,10 +509,10 @@ bot.onText(/\/(\w+)/, async (msg, match) => {
     case "start": {
       const welcomeText = `
 ◆━━━━━━━━━━━━━━━━━━━━━━━━◆
-       รקєςtгє II — SPECTRE
+       CYBERPUNK-BULLY
 ◆━━━━━━━━━━━━━━━━━━━━━━━━◆
 
-*🕵️ SPECTRE II Pairing Bot*
+*🕵️ CYBERPUNK-BULLY Pairing Bot*
 ━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ✦ Available Commands:
@@ -526,7 +526,7 @@ bot.onText(/\/(\w+)/, async (msg, match) => {
 🏓 /ping — Speed check
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━
-💡 *Developed by* @redshiftsupportbot
+💡 *Developed by* @cyberpunkbully
 `;
       bot.sendPhoto(chatId, SPECTRE_THUMB, {
         caption: welcomeText,
@@ -564,7 +564,7 @@ bot.onText(/\/(\w+)/, async (msg, match) => {
 
 ━━━━━━━━━━━━━━━━━━━━━
 ✅ *Status:* Running Smoothly
-🤖 *Bot:* รקєςtгє II
+🤖 *Bot:* CYBERPUNK-BULLY
 🔗 *Active Sessions:* ${activeSessions.size}
 `, { parse_mode: 'Markdown' });
       break;
@@ -635,8 +635,8 @@ ${!membership.isGroupMember ? '💬 Group: Required' : '✅ Group: Joined'}
 
 *Provide a phone number:*
 
-✅ *Correct:* \`/pair 234xxx\`
-❌ *Wrong:* \`/pair +234xxx\`
+✅ *Correct:* \`/pair 254xxx\`
+❌ *Wrong:* \`/pair +254xxx\`
 ❌ *Wrong:* \`/pair 070xxx\`
 
 ━━━━━━━━━━━━━━━━━━━━━
@@ -654,8 +654,8 @@ ${!membership.isGroupMember ? '💬 Group: Required' : '✅ Group: Joined'}
 ❌ *Error:* No + or 0 prefix
 
 *Example:*
-✅ Correct: \`234xxx\`
-❌ Wrong: \`+234xxx\`
+✅ Correct: \`254xxx\`
+❌ Wrong: \`+254xxx\`
 
 ━━━━━━━━━━━━━━━━━━━━━
 `, { parse_mode: 'Markdown' });
@@ -818,7 +818,7 @@ Use /pair to connect
       const minutes = Math.floor((uptime % (60 * 60)) / 60);
       bot.sendMessage(chatId, `
 ◆━━━━━━━━━━━━━━━━━━━━◆
-      ℹ️  SPECTRE II INFO
+      ℹ️  CYBERPUNK-BULLY INFO
 ◆━━━━━━━━━━━━━━━━━━━━◆
 
 ⏱ *Uptime:* ${days}d ${hours}h ${minutes}m
@@ -827,9 +827,9 @@ Use /pair to connect
 📡 *Status:* Online ✅
 
 ━━━━━━━━━━━━━━━━━━━━━
-🛠 *Developer:* @sudoxarc
+🛠 *Developer:* @cyberpunkbully
 📦 *Version:* 2.0.0
-🤖 *Bot:* รקєςtгє II
+🤖 *Bot:* CYBERPUNK-BULLY
 ━━━━━━━━━━━━━━━━━━━━━
 `, { parse_mode: 'Markdown' });
       break;
@@ -846,8 +846,8 @@ restoreExistingSessions();
 
 console.log(`\x1b[35m
 ◆━━━━━━━━━━━━━━━━━━━━━━━━━━━◆
-      รקєςtгє II  — ONLINE
+      CYBERPUNK-BULLY — ONLINE
 ◆━━━━━━━━━━━━━━━━━━━━━━━━━━━◆
-  Dev: sudo  |  Bot: SPECTRE II
+  Dev: sudo  |  Bot: CYBERPUNK-BULLY
 ◆━━━━━━━━━━━━━━━━━━━━━━━━━━━◆
 \x1b[0m`);
