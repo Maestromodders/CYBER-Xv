@@ -30,9 +30,6 @@ const store = createToxxicStore('./store', {
 const token = process.env.TELEGRAM_BOT_TOKEN;
 let OWNER_ID = process.env.OWNER_ID;
 
-const REQUIRED_CHANNEL = process.env.REQUIRED_CHANNEL || '@cyberpunkbully';
-const REQUIRED_GROUP = process.env.REQUIRED_GROUP || '@+-4jmRbsQY6JmZGJk';
-
 const SPECTRE_THUMB = 'https://files.catbox.moe/tk1xpz.jpeg';
 
 if (!token) {
@@ -75,19 +72,6 @@ function saveConnectedUsers() {
     fs.writeFileSync(connectedUsersFilePath, JSON.stringify(connectedUsers, null, 2));
   } catch (e) {
     console.error('[connectedUsers] save error:', e.message);
-  }
-}
-
-async function checkMembership(userId) {
-  try {
-    const channelMember = await bot.getChatMember(REQUIRED_CHANNEL, userId);
-    const groupMember = await bot.getChatMember(REQUIRED_GROUP, userId);
-    const isChannelMember = ['member', 'administrator', 'creator'].includes(channelMember.status);
-    const isGroupMember = ['member', 'administrator', 'creator'].includes(groupMember.status);
-    return { isChannelMember, isGroupMember, bothJoined: isChannelMember && isGroupMember };
-  } catch (error) {
-    console.error('Error checking membership:', error);
-    return { isChannelMember: false, isGroupMember: false, bothJoined: false };
   }
 }
 
@@ -382,8 +366,7 @@ _Select an option below:_
           [{ text: "📱 Pair WhatsApp", callback_data: "pair_info" }],
           [{ text: "📋 My Connections", callback_data: "list_my_connections" }],
           [{ text: "ℹ️ Bot Info", callback_data: "bot_info" }],
-          [{ text: "💬 Support", url: `https://t.me/${REQUIRED_GROUP.replace('@', '')}` }],
-          [{ text: "📢 Channel", url: `https://t.me/${REQUIRED_CHANNEL.replace('@', '')}` }]
+          [{ text: "💬 Support", url: `https://t.me/redshiftsupportbot` }]
         ]
       }
     }).catch(() => {});
@@ -460,7 +443,7 @@ _Select an option below:_
 📡 *Status:* Online ✅
 
 ━━━━━━━━━━━━━━━━━━━━━
-🛠 *Developer:* @@cyberpunkbully
+🛠 *Developer:* @cyberpunkbully
 📦 *Version:* 1.0.0
 🤖 *Bot:* CYBERPUNK-BULLY
 ━━━━━━━━━━━━━━━━━━━━━
@@ -536,10 +519,7 @@ bot.onText(/\/(\w+)/, async (msg, match) => {
             [{ text: "📱 Pair WhatsApp", callback_data: "pair_info" }],
             [{ text: "📋 My Connections", callback_data: "list_my_connections" }],
             [{ text: "ℹ️ Bot Info", callback_data: "bot_info" }],
-            [
-              { text: "💬 Group", url: `https://t.me/${REQUIRED_GROUP.replace('@', '')}` },
-              { text: "📢 Channel", url: `https://t.me/${REQUIRED_CHANNEL.replace('@', '')}` }
-            ]
+            [{ text: "💬 Support", url: `https://t.me/redshiftsupportbot` }]
           ]
         }
       }).catch(() => {});
@@ -599,33 +579,6 @@ bot.onText(/\/(\w+)/, async (msg, match) => {
     }
 
     case 'pair': {
-      const membership = await checkMembership(userId);
-      if (!membership.bothJoined) {
-        bot.sendMessage(chatId, `
-◆━━━━━━━━━━━━━━━━━━━━◆
-      ⚠️  ACCESS DENIED
-◆━━━━━━━━━━━━━━━━━━━━◆
-
-❌ *You must join both:*
-
-${!membership.isChannelMember ? '📢 Channel: Required' : '✅ Channel: Joined'}
-${!membership.isGroupMember ? '💬 Group: Required' : '✅ Group: Joined'}
-
-━━━━━━━━━━━━━━━━━━━━━
-*Join both to continue!*
-`, {
-          parse_mode: 'Markdown',
-          reply_markup: {
-            inline_keyboard: [
-              [{ text: "📢 Join Channel", url: `https://t.me/${REQUIRED_CHANNEL.replace('@', '')}` }],
-              [{ text: "💬 Join Group", url: `https://t.me/${REQUIRED_GROUP.replace('@', '')}` }],
-              [{ text: "✅ I Joined, Try Again", callback_data: "verify_membership" }]
-            ]
-          }
-        });
-        break;
-      }
-
       const phoneNumber = msg.text.split(' ')[1];
       if (!phoneNumber) {
         bot.sendMessage(chatId, `
