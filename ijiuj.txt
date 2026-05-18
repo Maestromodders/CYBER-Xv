@@ -1,0 +1,405 @@
+/*
+╔════════════════════╗
+║  รקєςtгє II        ║
+╠════════════════════╣
+║ bot    : SPECTRE II
+║ dev    : sudo
+║ base   : spectre-core
+║ tg     : t.me/sudo
+╚════════════════════╝
+*/
+
+require("./settings")
+const fs = require('fs');
+const path = require("path")
+const os = require('os');
+const chalk = require("chalk")
+const axios = require('axios')
+const dir = (relPath) => path.join(__dirname, relPath);
+const util = require('util');
+const moment = require('moment-timezone')
+
+const SETTINGS_JS = path.join(__dirname, 'settings.js');
+const SETTINGS_JSON = path.join(__dirname, 'settings.json');
+const SETTINGS_FILE = path.join(__dirname, 'settings.json');
+const ANTILINK_FILE = path.join(__dirname, 'antilink.json');
+const AUTOBLOCK_FILE = path.join(__dirname, 'autoblock.json');
+const ANTISPAM_FILE = path.join(__dirname, 'antispam.json');
+const ANTIMEDIA_FILE = path.join(__dirname, 'antimedia.json');
+const AUTOSTATUS_FILE = path.join(__dirname, 'autostatus.json');
+const CACHE_FILE = path.join(__dirname, 'group_tools_cache.json');
+const AUTOPP_TMP = path.join(__dirname, 'temp', 'autopp');
+const WELCOME_FILE = path.join(__dirname, 'welcome_settings.json');
+const fetch = require("node-fetch")
+const { exec } = require('child_process');
+const speed = require('performance-now')
+const { downloadContentFromMessage, proto, generateWAMessage, getContentType, prepareWAMessageMedia, generateWAMessageFromContent, GroupSettingChange, jidDecode, WAGroupMetadata, emitGroupParticipantsUpdate, emitGroupUpdate, generateMessageID, jidNormalizedUser, generateForwardMessageContent, WAGroupInviteMessageGroupMetadata, GroupMetadata, Headers, delay, WA_DEFAULT_EPHEMERAL, WADefault, getAggregateVotesInPollMessage, generateWAMessageContent, areJidsSameUser, useMultiFileAuthState, fetchLatestBaileysVersion, makeCacheableSignalKeyStore, makeWaconnet, makeInMemoryStore, MediaType, WAMessageStatus, downloadAndSaveMediaMessage, AuthenticationState, initInMemoryKeyStore, MiscMessageGenerationOptions, useSingleFileAuthState, BufferJSON, WAMessageProto, MessageOptions, WAFlag, WANode, WAMetric, ChatModification, MessageTypeProto, WALocationMessage, ReconnectMode, WAContextInfo, ProxyAgent, waChatKey, MimetypeMap, MediaPathMap, WAContactMessage, WAContactsArrayMessage, WATextMessage, WAMessageContent, WAMessage, BaileysError, WA_MESSAGE_STATUS_TYPE, MediaConnInfo, URL_REGEX, WAUrlInfo, WAMediaUpload, mentionedJid, processTime, Browser, MessageType,
+Presence, WA_MESSAGE_STUB_TYPES, Mimetype, relayWAMessage, Browsers, DisconnectReason, WAconnet, getStream, WAProto, isBaileys, AnyMessageContent, templateMessage, InteractiveMessage, Header } = require("@whiskeysockets/baileys")
+const thumb = fs.readFileSync('./media/face.jpeg')
+const docu = fs.readFileSync('./media/love.jpeg')
+
+
+module.exports = james = async (james, m, chatUpdate, store) => {
+    try {
+        const body = (
+            m.mtype === "conversation" ? m.message.conversation :
+            m.mtype === "imageMessage" ? m.message.imageMessage.caption :
+            m.mtype === "videoMessage" ? m.message.videoMessage.caption :
+            m.mtype === "extendedTextMessage" ? m.message.extendedTextMessage.text :
+            m.mtype === "buttonsResponseMessage" ? m.message.buttonsResponseMessage.selectedButtonId :
+            m.mtype === "listResponseMessage" ? m.message.listResponseMessage.singleSelectReply.selectedRowId :
+            m.mtype === "templateButtonReplyMessage" ? m.message.templateButtonReplyMessage.selectedId :
+            m.mtype === "interactiveResponseMessage" ? JSON.parse(m.msg.nativeFlowResponseMessage.paramsJson).id :
+            m.mtype === "templateButtonReplyMessage" ? m.msg.selectedId :
+            m.mtype === "messageContextInfo" ? m.message.buttonsResponseMessage?.selectedButtonId ||
+            m.message.listResponseMessage?.singleSelectReply.selectedRowId || m.text : ""
+        );
+        
+        const sender = m.key.fromMe ? james.user.id.split(":")[0] + "@s.whatsapp.net" ||
+              sock.user.id : m.key.participant || m.key.remoteJid;
+        
+        const senderNumber = sender.split('@')[0];
+        const budy = (typeof m.text === 'string' ? m.text : '');
+        const xprefix = ["", "!", ".", ",", "🐤", "🗿"];
+
+        const prefixRegex = /^[°zZ#$@*+,.?=''():√%!¢£¥€π¤ΠΦ_&><`™©®Δ^βα~¦|/\\©^]/;
+        const prefix = ['.', '/'] ? /^[°•π÷×¶∆£¢€¥®™+✓_=|~!?@#$%^&.©^]/gi.test(body) ? body.match(/^[°•π÷×¶∆£¢€¥®™+✓_=|~!?@#$%^&.©^]/gi)[0] : "" : global.xprefix
+        const from = m.key.remoteJid;
+        const isGroup = from.endsWith("@g.us");
+        const botNumber = await james.decodeJid(james.user.id);
+        const isBot = botNumber.includes(senderNumber)
+        
+        const isCmd = body.startsWith(global.xprefix);
+        const command = isCmd ? body.slice(prefix.length).trim().split(' ').shift().toLowerCase() : '';
+        const command2 = body.replace(prefix, '').trim().split(/ +/).shift().toLowerCase()
+        
+
+        const args = body.trim().split(/ +/).slice(1);
+        const pushname = m.pushName || "No Name";
+        const text = q = args.join(" ");
+        const quoted = m.quoted ? m.quoted : m;
+        const mime = (quoted.msg || quoted).mimetype || '';
+        const qmsg = (quoted.msg || quoted);
+        const isMedia = /image|video|sticker|audio/.test(mime);
+        const groupMetadata = m?.isGroup ? await james.groupMetadata(m.chat).catch(() => ({})) : {};
+        const groupName = m?.isGroup ? groupMetadata.subject || '' : '';
+        const participants = m?.isGroup ? groupMetadata.participants?.map(p => {
+            let admin = null;
+            if (p.admin === 'superadmin') admin = 'superadmin';
+            else if (p.admin === 'admin') admin = 'admin';
+            return {
+                id: p.id || null,
+                jid: p.jid || null,
+                admin,
+                full: p
+            };
+        }) || []: [];
+        const groupOwner = m?.isGroup ? participants.find(p => p.admin === 'superadmin')?.jid || '' : '';
+        const groupAdmins = participants.filter(p => p.admin === 'admin' || p.admin === 'superadmin').map(p => p.jid || p.id);
+        const isBotAdmins = m?.isGroup ? groupAdmins.includes(botNumber) : false;
+        const isAdmins = m?.isGroup ? groupAdmins.includes(m.sender) : false;
+        const isGroupOwner = m?.isGroup ? groupOwner === m.sender : false;
+        const isOwner = [botNumber, ...global.owner]
+			.map(v => v.replace(/[^0-9]/g, "") + "@s.whatsapp.net")
+			.includes(m.sender);
+			
+		if (!james.public) {
+			if (!m.fromMe && !isOwner) return;
+		};
+
+
+
+	const time = moment().tz("Africa/Nairobi").format("HH:mm:ss");
+		let ucapanWaktu;
+		if (time >= "19:00:00" && time < "23:59:00") {
+			ucapanWaktu = "夜 🌌";
+		} else if (time >= "15:00:00" && time < "19:00:00") {
+			ucapanWaktu = "午後 🌇";
+		} else if (time >= "11:00:00" && time < "15:00:00") {
+			ucapanWaktu = "正午 🏞️";
+		} else if (time >= "06:00:00" && time < "11:00:00") {
+			ucapanWaktu = "朝 🌁";
+		} else {
+			ucapanWaktu = "夜明け 🌆";
+		}
+		const wib = moment(Date.now()).tz("Africa/Nairobi").locale("id").format("HH:mm:ss z");
+		const wita = moment(Date.now()).tz("Africa/Nairobi").locale("id").format("HH:mm:ss z");
+		const wit = moment(Date.now()).tz("Africa/Nairobi").locale("id").format("HH:mm:ss z");
+		const salam = moment(Date.now()).tz("Africa/Nairobi").locale("id").format("a");
+		let d = new Date();
+		let gmt = new Date(0).getTime() - new Date("1 Januari 2024").getTime();
+		let weton = ["Pahing", "Pon", "Wage", "Kliwon", "Legi"][Math.floor(((d * 1) + gmt) / 84600000) % 5];
+		let week = d.toLocaleDateString("id", { weekday: "long" });
+		let calendar = d.toLocaleDateString("id", {
+			day: "numeric",
+			month: "long",
+			year: "numeric"
+		});		
+
+if (isCmd) {
+  console.log(chalk.hex('#4a69bd').bold(`
+┌───────────────────────────────┐
+│ ⟨ รקєςtгє II ⟩
+├───────────────────────────────┤
+│ 📅 ${chalk.hex('#fdcb6e').bold(time)}
+│ 💬 ${chalk.hex('#fdcb6e').bold(command)}
+│ 🗣️ ${chalk.hex('#fdcb6e').bold(pushname)}
+│ 👤 ${chalk.hex('#fdcb6e').bold(m.sender)}
+└───────────────────────────────┘
+`));
+}
+
+const cina = ["https://ik.imagekit.io/apexcloud/IMG_20260322_001154.jpg","https://ik.imagekit.io/apexcloud/IMG_20260322_001154.jpg","https://ik.imagekit.io/apexcloud/IMG_20260322_001154.jpg","https://ik.imagekit.io/apexcloud/IMG_20260322_001154.jpg"]
+ 
+function getRandomImage() {
+    const randomIndex = Math.floor(Math.random() * cina.length);
+    return cina[randomIndex];
+}
+const cinahitam = getRandomImage()
+
+async function pickRandom(list) {
+    return list[Math.floor(Math.random() * list.length)]
+}
+        
+const more = String.fromCharCode(8206)
+const readmore = more.repeat(4001)
+const hunterx = (m) => ({
+  key: {
+    participant: "0@s.whatsapp.net",
+    ...(m.chat ? { remoteJid: "status@broadcast" } : {})
+  },
+  message: {
+    listResponseMessage: {
+      title: "𝑹𝒀𝑼𝑪𝑯𝑰 𝑪𝑹𝑨𝑺𝑯"
+    }
+  }
+})     
+
+const reply = (text) => james.sendMessage(from, { text: text }, { quoted: m });
+
+switch (command) {
+// ============================================
+// รקєςtгє II - MULTIPLE MENU SYSTEM
+// ============================================
+case "menu": {
+    let mainMenu = `${readmore}
+┏━━━━━━━━━━━━━━━━━━━━┓
+┃     ꜱᴘᴇᴄᴛʀᴇ II     ┣━━━━━━━━━━━━━━━━━━━━┛
+┃ 👤 User:${pushname}
+┃ 🔧 Host: Andromedaxs
+┃ 📢 Updates: t.me/andromedaxs
+┃ 📁 Version: II
+┗━━━━━━━━━━━━━━━━━━━━
+┏━━━━━━━━━━━━━━━━━━━━
+┃ .ɪᴍᴘᴏʀᴛᴀɴᴛᴍᴇɴᴜ 
+┃ .ᴏᴡɴᴇʀᴍᴇɴᴜ 
+┃ .ᴅᴇᴠᴍᴇɴᴜ 
+┃ .ᴜᴛɪʟɪᴛʏᴍᴇɴᴜ 
+┃ .ᴅᴏᴡɴʟᴏᴀᴅᴍᴇɴᴜ 
+┃ .ɢʀᴏᴜᴘᴍᴇɴᴜ 
+┃ .ɴᴇᴡᴍᴇɴᴜ
+┗━━━━━━━━━━━━━━━━━━━━
+`
+    await james.sendMessage(m.chat, { text: mainMenu, contextInfo: { mentionedJid: [m.sender], externalAdReply: { title: "รקєςtгє II", body: "by sudo", mediaType: 1, thumbnailUrl: "https://ik.imagekit.io/apexcloud/IMG_20260322_001154.jpg", sourceUrl: "https://t.me/sudo", renderLargerThumbnail: true } } }, { quoted: m });
+}
+break;
+
+// ============================================
+// IMPORTANT MENU
+// ============================================
+case "importantmenu": {
+    let importantMenu = `${readmore}
+┏━━━━━━━━━━━━━━━━━━━━
+┃ 📌 IMPORTANT COMMANDS 
+┣━━━━━━━━━━━━━━━━━━━━
+┃ ✦ repo 
+┃ ✦ freebot 
+┃ ✦ telebot 
+┃ ✦ script 
+┃ ✦ sc 
+┗━━━━━━━━━━━━━━━━━━━━
+_Type .menu to return_
+`
+    await james.sendMessage(m.chat, { text: importantMenu, contextInfo: { mentionedJid: [m.sender], externalAdReply: { title: "รקєςtгє II — Important", body: "Essential commands", mediaType: 1, thumbnailUrl: "https://ik.imagekit.io/apexcloud/IMG_20260322_001154.jpg", sourceUrl: "https://t.me/sudo", renderLargerThumbnail: true } } }, { quoted: m });
+}
+break;
+
+// ============================================
+// OWNER MENU
+// ============================================
+case "ownermenu": {
+    let ownerMenu = `${readmore}
+┏━━━━━━━━━━━━━━━━━━━━
+┃ 👑 OWNER CONTROLS 
+┣━━━━━━━━━━━━━━━━━━━━
+┃ ✦ autoblock 
+┃ ✦ antispam 
+┃ ✦ self 
+┃ ✦ public 
+┃ ✦ > ✦ autoreply 
+┃ ✦ antidelete 
+┃ ✦ block 
+┃ ✦ unblock 
+┃ ✦ autorecording 
+┃ ✦ autotyping 
+┃ ✦ autorecordtype 
+┃ ✦ autoswview 
+┃ ✦ autoreact 
+┃ ✦ autostatus 
+┃ ✦ antimedia 
+┗━━━━━━━━━━━━━━━━━━━━
+_Type .menu to return_
+`
+    await james.sendMessage(m.chat, { text: ownerMenu, contextInfo: { mentionedJid: [m.sender], externalAdReply: { title: "รקєςtгє II — Owner", body: "Admin & control", mediaType: 1, thumbnailUrl: "https://ik.imagekit.io/apexcloud/IMG_20260322_001154.jpg", sourceUrl: "https://t.me/sudo", renderLargerThumbnail: true } } }, { quoted: m });
+}
+break;
+
+// ============================================
+// DEV MENU
+// ============================================
+case "devmenu": {
+    let devMenu = `${readmore}
+┏━━━━━━━━━━━━━━━━━━━━
+┃ 💻 DEVELOPER MENU 
+┣━━━━━━━━━━━━━━━━━━━━
+┃ ✦ eval ( $ / > )
+┃ ✦ addcase 
+┃ ✦ delcase 
+┃ ✦ listcase 
+┃ ✦ editcase 
+┃ ✦ encrypt 
+┃ ✦ inspect 
+┗━━━━━━━━━━━━━━━━━━━━
+_Type .menu to return_
+`
+    await james.sendMessage(m.chat, { text: devMenu, contextInfo: { mentionedJid: [m.sender], externalAdReply: { title: "รקєςtгє II — Dev", body: "Technical tools", mediaType: 1, thumbnailUrl: "https://ik.imagekit.io/apexcloud/IMG_20260322_001154.jpg", sourceUrl: "https://t.me/sudo", renderLargerThumbnail: true } } }, { quoted: m });
+}
+break;
+
+// ============================================
+// UTILITY MENU
+// ============================================
+case "utilitymenu": {
+    let utilMenu = `${readmore}
+┏━━━━━━━━━━━━━━━━━━━━
+┃ 🛠️ UTILITY TOOLS 
+┣━━━━━━━━━━━━━━━━━━━━
+┃ ✦ runtime 
+┃ ✦ ping 
+┃ ✦ speed 
+┃ ✦ owner 
+┃ ✦ chatid 
+┃ ✦ getquoted 
+┃ ✦ weather 
+┃ ✦ google 
+┃ ✦ translate 
+┃ ✦ shorturl 
+┗━━━━━━━━━━━━━━━━━━━━
+_Type .menu to return_
+`
+    await james.sendMessage(m.chat, { text: utilMenu, contextInfo: { mentionedJid: [m.sender], externalAdReply: { title: "รקєςtгє II — Utility", body: "Useful tools", mediaType: 1, thumbnailUrl: "https://ik.imagekit.io/apexcloud/IMG_20260322_001154.jpg", sourceUrl: "https://t.me/sudo", renderLargerThumbnail: true } } }, { quoted: m });
+}
+break;
+
+// ============================================
+// DOWNLOAD MENU
+// ============================================
+case "downloadmenu": {
+    let dlMenu = `${readmore}
+┏━━━━━━━━━━━━━━━━━━━━
+┃ 📥 DOWNLOADER MENU 
+┣━━━━━━━━━━━━━━━━━━━━
+┃ ✦ tiktok 
+┃ ✦ instagram 
+┃ ✦ facebook 
+┃ ✦ youtube 
+┃ ✦ ytmp3 
+┃ ✦ ytmp4 
+┃ ✦ twitter 
+┃ ✦ gitclone 
+┃ ✦ mediafire 
+┃ ✦ gdrive 
+┗━━━━━━━━━━━━━━━━━━━━
+_Type .menu to return_
+`
+    await james.sendMessage(m.chat, { text: dlMenu, contextInfo: { mentionedJid: [m.sender], externalAdReply: { title: "รקєςtгє II — Download", body: "Media fetcher", mediaType: 1, thumbnailUrl: "https://ik.imagekit.io/apexcloud/IMG_20260322_001154.jpg", sourceUrl: "https://t.me/sudo", renderLargerThumbnail: true } } }, { quoted: m });
+}
+break;
+
+// ============================================
+// GROUP MENU
+// ============================================
+case "groupmenu": {
+    let groupMenu = `${readmore}
+┏━━━━━━━━━━━━━━━━━━━━
+┃ 👥 GROUP SETTINGS 
+┣━━━━━━━━━━━━━━━━━━━━
+┃ ✦ linkgroup 
+┃ ✦ revoke 
+┃ ✦ kick 
+┃ ✦ add 
+┃ ✦ promote 
+┃ ✦ demote 
+┃ ✦ setname 
+┃ ✦ setdesc 
+┃ ✦ setpp 
+┃ ✦ welcome 
+┃ ✦ antilink 
+┃ ✦ tagall 
+┃ ✦ hidetag 
+┃ ✦ listonline 
+┗━━━━━━━━━━━━━━━━━━━━
+_Type .menu to return_
+`
+    await james.sendMessage(m.chat, { text: groupMenu, contextInfo: { mentionedJid: [m.sender], externalAdReply: { title: "รקєςtгє II — Group", body: "Admin commands", mediaType: 1, thumbnailUrl: "https://ik.imagekit.io/apexcloud/IMG_20260322_001154.jpg", sourceUrl: "https://t.me/sudo", renderLargerThumbnail: true } } }, { quoted: m });
+}
+break;
+
+// ============================================
+// NEW MENU
+// ============================================
+case "newmenu": {
+    let newMenu = `${readmore}
+┏━━━━━━━━━━━━━━━━━━━━
+┃ 🆕 NEW UPDATES 
+┣━━━━━━━━━━━━━━━━━━━━
+┃ ✦ ai 
+┃ ✦ darkai 
+┃ ✦ imagine 
+┃ ✦ remini 
+┃ ✦ removebg 
+┃ ✦ toimage 
+┃ ✦ sticker 
+┃ ✦ ttp 
+┃ ✦ attp 
+┗━━━━━━━━━━━━━━━━━━━━
+_Type .menu to return_
+`
+    await james.sendMessage(m.chat, { text: newMenu, contextInfo: { mentionedJid: [m.sender], externalAdReply: { title: "รקєςtгє II — New", body: "Latest additions", mediaType: 1, thumbnailUrl: "https://ik.imagekit.io/apexcloud/IMG_20260322_001154.jpg", sourceUrl: "https://t.me/sudo", renderLargerThumbnail: true } } }, { quoted: m });
+}
+break;
+
+        default:
+            if (isOwner && body.startsWith('>')) {
+                try {
+                    let evaled = await eval(body.slice(1));
+                    if (typeof evaled !== 'string') evaled = util.inspect(evaled);
+                    await reply(evaled);
+                } catch (err) {
+                    await reply(String(err));
+                }
+            }
+            break;
+        }
+    } catch (err) {
+        console.log(util.format(err));
+    }
+}
+
+let file = require.resolve(__filename)
+fs.watchFile(file, () => {
+  fs.unwatchFile(file)
+  console.log('\x1b[0;32m'+__filename+' \x1b[1;32mupdated!\x1b[0m')
+  delete require.cache[file]
+  require(file)
+})
